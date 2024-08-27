@@ -28,9 +28,55 @@ export const createPurchase = async (req, res) => {
 
         purhcaseProducts.push({
             product: product._id,
-            quant
+            quantity: item.quantity,
+            price: product.price
         });
+        
+        product.quantity -= item.quantity;
+        await product.save();
+        
+        const receiptNumber  = 'R' + Date.now();
+    const purchase = await Purchase.create({
+        customer: req.user._id,
+        products: purchaseProducts,
+        totalAmount,
+        receiptNumber
+    });
 
+    res.status(201).json({
+        status: 'success',
+        data: {
+            purchase,
+            receipt: generateReceipt(purchase)
+        }
+    });
 
+    } catch (error) {
+        res.status(400).json({
+            status: 'fail',
+            message: error.message
+        });
     }
+
+    
+};
+
+function generateReceipt(purchase) {
+    let receipt = `
+        Receipt Number: ${purchase.receiptNumber}
+        Date: ${purchase.createdAt}
+        ---------------------------------------
+        Items:
+    `;
+    purchase.products.forEach(item => {
+    receipt += `${item.product.name} x ${item.quantity}: $${item.price * item.quantiy}\n`;
+
+    });
+
+    receipt += `--------------------------------
+    Total Amount: $${purchase.totalAmount}
+    Thank you for your purchase!
+    `;
+
+    return receipt;
 }

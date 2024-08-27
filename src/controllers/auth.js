@@ -1,13 +1,16 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const SECRET_KEY = process.env.JWT_SECRET || 'admin';
+
 const signToken = id => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN
+    return jwt.sign({ id }, SECRET_KEY, {
+        expiresIn: '1h'
     });
 };
 
-export const signup = async (req, res) => {
+
+const signup = async (req, res) => {
     try {
         const { username, email, password, role } = req.body;
 
@@ -28,14 +31,14 @@ export const signup = async (req, res) => {
             }
         });
     } catch(error) {
-        res.status.(400).json({
+        res.status(400).json({
             status: 'fail',
             message: error.message
         });
     }
 }
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -60,3 +63,6 @@ export const login = async (req, res) => {
         });
     }
 };
+
+
+module.exports = { login, signup };

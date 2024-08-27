@@ -1,14 +1,14 @@
 const Product = require('../models/product');
 
-export const createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
     try {
         const { name, price, quantity, description } = req.body;
-        const product = await product = await Product.create({
+        const product = await Product.create({
             name,
             price,
             quantity,
             description,
-            createdBy: req.user._id
+            createdBy: '66cdd9ed4ffae0b94ee5b12e'
         });
         res.status(201).json({
             status: 'success',
@@ -19,10 +19,11 @@ export const createProduct = async (req, res) => {
             status: 'fail',
             message: error.message
         });
+        console.log(error);
     }
 }
 
-export const getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find();
 
@@ -37,4 +38,9 @@ export const getAllProducts = async (req, res) => {
             message: error.message
         });
     }
+}
+
+module.exports = {
+    createProduct,
+    getAllProducts
 }
