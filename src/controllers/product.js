@@ -38,7 +38,7 @@ const getAllProducts = async (req, res) => {
             message: error.message
         });
     }
-}
+};
 
 module.exports = {
     createProduct,
