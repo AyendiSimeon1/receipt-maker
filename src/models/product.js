@@ -28,6 +28,32 @@ const productSchema = new mongoose.Schema({
     }
 }, { timestamps: true});
 
+const purchaseSchema = new mongoose.Schema({
+
+    productId: {
+        type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    },
+    totalPrice: {
+        type: Number,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
+    },
+    customerName: {
+        type: String,
+        required: true
+    }
+  });
+
 const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product;
+const Purchase = mongoose.model('Purchase', purchaseSchema);
+
+module.exports = { Product, Purchase };
