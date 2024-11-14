@@ -34,6 +34,6 @@ mongoose.connect(uri, options)
     console.error('Error connecting to MongoDB:', err);
   });
 
-app.listen(3004, () => {
-    console.log('Its working');
+app.listen(`${PORT}`, () => {
+    console.log(`Listening on http://localhost/${PORT}`);
 });
